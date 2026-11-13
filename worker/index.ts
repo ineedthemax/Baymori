@@ -6,6 +6,7 @@ interface Statement {
   bind(...params: unknown[]): Statement;
   run(): Promise<unknown>;
   first<T = Record<string, unknown>>(): Promise<T | null>;
+  all<T = Record<string, unknown>>(): Promise<D1Result<T>>;
 }
 interface Database { prepare(sql: string): Statement; batch(statements: Statement[]): Promise<unknown> }
 interface Assets { fetch(request: Request): Promise<Response> }
@@ -112,5 +113,20 @@ export default {
       ctx.waitUntil(flushOutbox(env, id, lead));
       return json({ received: true, id }, 202);
     } catch { return json({ error: "We couldn't save your request. Please try again." }, 503); }
+  },
+  async scheduled(_event: { scheduledTime: number }, env: Env): Promise<void> {
+    if (!env.LEADS_DB || !env.RESEND_API_KEY || !env.ALERT_EMAIL || !env.RESEND_FROM_EMAIL) return;
+    const queued = await env.LEADS_DB.prepare(
+      "SELECT DISTINCT l.id, l.kind, l.first_name, l.last_name, l.email, l.business, l.website, l.service, l.details FROM leads l JOIN notification_outbox o ON o.lead_id=l.id WHERE o.status != 'sent' AND o.attempts < 5 AND (o.retry_after IS NULL OR o.retry_after <= datetime('now')) ORDER BY l.created_at LIMIT 20"
+    ).all<{id:string;kind:Input["kind"];first_name:string;last_name:string;email:string;business:string;website:string;service:Input["service"];details:string}>();
+    for (const record of queued.results || []) {
+      const lead: Input = {
+        kind: record.kind, firstName: record.first_name, lastName: record.last_name,
+        email: record.email, business: record.business, website: record.website,
+        service: record.service, details: record.details, consent: true,
+        turnstileToken: "", requestId: record.id,
+      };
+      await flushOutbox(env, record.id, lead);
+    }
   },
 };
