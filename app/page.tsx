@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ArrowRight, ArrowUpRight, Menu, X, Globe2, SearchCheck, Zap, ServerCog, Check, CheckCircle2, ShieldCheck } from "lucide-react";
 import { DotField } from "@/components/ui/dot-field";
 import { IntegrationNetwork } from "@/components/ui/integration-network";
+import { ClientInquiryForm } from "@/components/ui/client-inquiry-form";
 
 const CONTACT_FORM = "https://form.jotform.com/263155617068057";
 
@@ -81,7 +82,7 @@ function InquiryForm() {
     <span className="form-kicker">PROJECT INQUIRY</span>
     <h3>Start with a conversation.</h3>
     <p className="form-intro">Tell us what you need. We’ll review your project and follow up about the right next step.</p>
-    <iframe className="project-form-frame" title="Baymori project inquiry form" src={CONTACT_FORM} loading="lazy" />
+    <ClientInquiryForm variant="project" />
     <p className="form-note">Please don't share passwords or sensitive account information.</p>
     <a className="form-open-link" href={CONTACT_FORM} target="_blank" rel="noopener noreferrer">Having trouble with the form? Open it directly <ArrowUpRight size={15}/></a>
     <a href="/transfer" className="form-transfer">Moving an existing site? Request a migration assessment <ArrowUpRight size={15}/></a>
