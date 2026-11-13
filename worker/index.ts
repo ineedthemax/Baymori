@@ -29,7 +29,7 @@ type Input = {
 const json = (obj: unknown, status = 200) => new Response(JSON.stringify(obj), {
   status, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store", "x-content-type-options": "nosniff" },
 });
-const invalid = (body: unknown): body is Input => {
+const isValidInput = (body: unknown): body is Input => {
   if (!body || typeof body !== "object") return false;
   const x = body as Record<string, unknown>;
   const str = (k: string, max: number, required = false) =>
@@ -73,7 +73,9 @@ async function flushOutbox(env: Env, leadId: string, lead: Input): Promise<void>
   for (const job of jobs) {
     const id = `${leadId}:${job.purpose}`;
     try {
-      await env.LEADS_DB.prepare("UPDATE notification_outbox SET attempts = attempts + 1 WHERE id = ? AND status = 'pending'").bind(id).run();
+      const current = await env.LEADS_DB.prepare("SELECT status FROM notification_outbox WHERE id = ?").bind(id).first<{status:string}>();
+      if (!current || current.status === "sent") continue;
+      await env.LEADS_DB.prepare("UPDATE notification_outbox SET status='pending', attempts=attempts+1 WHERE id = ? AND status != 'sent'").bind(id).run();
       await sendEmail(env, job.recipient, job.subject, job.text, id);
       await env.LEADS_DB.prepare("UPDATE notification_outbox SET status='sent', delivered_at=datetime('now'), last_error=NULL WHERE id=?").bind(id).run();
     } catch (e) {
@@ -93,8 +95,8 @@ export default {
     if (!origin || new URL(env.SITE_ORIGIN).origin !== origin) return json({ error: "Invalid origin" }, 403);
     if (Number(request.headers.get("content-length") || "0") > 12500) return json({ error: "Request too large" }, 413);
     let body: unknown;
-    try { body = await request.json(); } catch { return json({ error: "Invalid JSON" }, 400); }
-    if (!invalid(body)) return json({ error: "Please check your answers" }, 400);
+    try { const raw = await request.text(); if (raw.length > 12500) return json({ error: "Request too large" }, 413); body = JSON.parse(raw); } catch { return json({ error: "Invalid JSON" }, 400); }
+    if (!isValidInput(body)) return json({ error: "Please check your answers" }, 400);
     const lead = body as Input;
     if (!(await verifyTurnstile(lead.turnstileToken, env.TURNSTILE_SECRET, request.headers.get("CF-Connecting-IP")))) return json({ error: "Security check failed" }, 400);
     const id = lead.requestId;
