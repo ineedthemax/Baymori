@@ -1,3 +1,4 @@
+import { ClientInquiryForm } from "@/components/ui/client-inquiry-form";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -27,7 +28,7 @@ export default function TransferPage() {
         </div>
         <section className="transfer-form-section" aria-label="Migration assessment request">
           <div className="transfer-form-head"><h2>Tell us about your website.</h2><p>Complete the short form below. No passwords or payment information needed.</p></div>
-          <iframe className="transfer-form-frame" title="Baymori website migration assessment form" src={FORM_URL} loading="lazy" />
+          <ClientInquiryForm variant="transfer" />
           <div className="transfer-form-footer"><a href={FORM_URL} target="_blank" rel="noopener noreferrer">Open the form in a new tab ↗</a><p>Submitting this form requests an assessment. It does not authorize a transfer or guarantee zero downtime.</p></div>
         </section>
         <section className="transfer-how" aria-labelledby="transfer-how-title"><h2 id="transfer-how-title">Here's how it works.</h2><div className="transfer-how-grid">
