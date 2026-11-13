@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "baymori-lead-flow-staging",
+  "compatibility_date": "2026-11-13",
+  "main": "./worker/index.ts",
+  "assets": {
+    "directory": "./out",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"],
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  "d1_databases": [
+    { "binding": "LEADS_DB", "database_name": "baymori-leads-staging", "database_id": "835127cf-8468-41dd-95f9-a3bedcce13a0" }
+  ],
+  "triggers": { "crons": ["0 * * * *"] },
+  "vars": { "SITE_ORIGIN": "https://baymori-lead-flow-staging.ineedthemax05.workers.dev" }
+}
