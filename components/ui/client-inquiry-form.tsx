@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ArrowLeft, ArrowRight, CheckCircle2, ShieldCheck } from "lucide-react";
 
 type Variant = "project" | "transfer";
@@ -22,6 +22,46 @@ const prompts: Record<Service, { title: string; placeholder: string }> = {
   audit: { title: "What's not working smoothly in your digital setup?", placeholder: "Tell us about your website, tools, and biggest challenges..." },
 };
 
+type TurnstileAPI = { render: (element: HTMLElement, options: { sitekey: string; callback: (token: string) => void; "expired-callback": () => void; "error-callback": () => void }) => string; remove: (id: string) => void };
+type TurnstileWindow = Window & { turnstile?: TurnstileAPI };
+const sitekey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "";
+function TurnstileCheck({ onToken }: { onToken: (token: string) => void }) {
+  const anchorRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!sitekey) return;
+    let cancelled = false;
+    let widgetId: string | undefined;
+    const element = anchorRef.current;
+    const setup = () => {
+      if (cancelled || !element) return;
+      const api = (window as TurnstileWindow).turnstile;
+      if (!api || widgetId) return;
+      widgetId = api.render(element, {
+        sitekey,
+        callback: onToken,
+        "expired-callback": () => onToken(""),
+        "error-callback": () => onToken(""),
+      });
+    };
+    const scriptId = "baymori-turnstile-js";
+    let script = document.getElementById(scriptId) as HTMLScriptElement | null;
+    if (!script) {
+      script = document.createElement("script");
+      script.id = scriptId;
+      script.async = true;
+      script.defer = true;
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      document.head.appendChild(script);
+    }
+    script.addEventListener("load", setup);
+    setup();
+    const check = window.setInterval(setup, 300);
+    return () => { cancelled = true; clearInterval(check); script?.removeEventListener("load", setup); if (widgetId) (window as TurnstileWindow).turnstile?.remove(widgetId); };
+  }, [onToken]);
+  if (!sitekey) return <p className="guided-error" role="status">Secure submissions are being configured. Please use the backup inquiry link below.</p>;
+  return <div className="guided-turnstile" ref={anchorRef} aria-label="Security verification"/>;
+}
+
 export function ClientInquiryForm({ variant = "project" }: { variant?: Variant }) {
   const [step, setStep] = useState(0);
   const [firstName, setFirstName] = useState("");
@@ -33,6 +73,9 @@ export function ClientInquiryForm({ variant = "project" }: { variant?: Variant }
   const [details, setDetails] = useState("");
   const [permission, setPermission] = useState(false);
   const [sending, setSending] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [requestId, setRequestId] = useState("");
+  const [websiteConfirmation, setWebsiteConfirmation] = useState("");
   const [result, setResult] = useState<"idle" | "success" | "error">("idle");
   const isTransfer = variant === "transfer";
   const givenName = firstName.trim().split(/\s+/)[0] || "there";
@@ -44,8 +87,11 @@ export function ClientInquiryForm({ variant = "project" }: { variant?: Variant }
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!permission || !email || !firstName.trim() || !details.trim()) return;
+    if (!sitekey || !turnstileToken) { setResult("error"); return; }
     setResult("idle");
     setSending(true);
+    const submissionId = requestId || crypto.randomUUID();
+    if (!requestId) setRequestId(submissionId);
     try {
       // A production endpoint must validate inputs, verify Turnstile, persist the lead,
       // then queue notification email. Until configured, errors stay visible to users.
@@ -56,13 +102,14 @@ export function ClientInquiryForm({ variant = "project" }: { variant?: Variant }
           kind: variant, firstName: firstName.trim(), lastName: lastName.trim(),
           email: email.trim(), business: business.trim(), website: website.trim(),
           service: isTransfer ? "hosting" : service, details: details.trim(),
-          consent: permission,
+          consent: permission, turnstileToken, requestId: submissionId, websiteConfirmation,
         }),
       });
       if (!response.ok) throw new Error("Submission unavailable");
       setResult("success");
     } catch {
       setResult("error");
+      setTurnstileToken("");
     } finally {
       setSending(false);
     }
@@ -118,13 +165,15 @@ export function ClientInquiryForm({ variant = "project" }: { variant?: Variant }
               <div><label htmlFor={`${variant}-last`}>Last name (optional)</label><input id={`${variant}-last`} autoComplete="family-name" value={lastName} onChange={e => setLastName(e.target.value)} maxLength={80}/></div>
               <div><label htmlFor={`${variant}-email`}>Email address <span aria-hidden="true">*</span></label><input id={`${variant}-email`} autoComplete="email" type="email" value={email} onChange={e => setEmail(e.target.value)} required maxLength={254} placeholder="you@example.com"/></div>
             </div>
+            <label className="guided-hidden" aria-hidden="true">Website confirmation<input tabIndex={-1} autoComplete="off" value={websiteConfirmation} onChange={e => setWebsiteConfirmation(e.target.value)} /></label>
+            <TurnstileCheck onToken={setTurnstileToken}/>
             <label className="guided-consent"><input type="checkbox" checked={permission} onChange={e => setPermission(e.target.checked)} required/><span>I agree to be contacted about my inquiry.</span></label>
             {result === "error" && <p className="guided-error" role="alert">The form could not be submitted. Your details are still here. Please use the backup contact option below.</p>}
           </fieldset>}
           <div className="guided-actions">
             {step > 0 && <button type="button" className="guided-back" onClick={() => {setStep(v => v - 1); setResult("idle");}}><ArrowLeft size={16}/> Back</button>}
             {step < 2 ? <button type="button" className="btn btn-copper" disabled={!canContinue} onClick={() => setStep(v => v + 1)}>Continue <ArrowRight size={16}/></button>
-              : <button className="btn btn-copper" type="submit" disabled={sending || !permission || !details.trim() || !email.trim()}>{sending ? "Sending..." : "Send inquiry"} <ArrowRight size={16}/></button>}
+              : <button className="btn btn-copper" type="submit" disabled={sending || !permission || !details.trim() || !email.trim() || !turnstileToken || !sitekey}>{sending ? "Sending..." : "Send inquiry"} <ArrowRight size={16}/></button>}
           </div>
         </>
       )}
