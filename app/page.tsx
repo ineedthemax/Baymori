@@ -54,9 +54,9 @@ export default function Home() {
     </div></section>
 
     <section id="integrations" className="section surface-white"><div className="wrap">
-      <div className="section-head"><div><span className="kicker">TOOLS WORKING TOGETHER</span><h2>Your tools.<br/><em>Less friction.</em></h2></div><p>From Codex and Claude to Notion, Zoom, and Calendly, we explore ways to connect the tools you already use, based on your needs and available integrations.</p></div>
+      <div className="section-head"><div><span className="kicker">BETTER WORKFLOWS, LESS MANUAL WORK</span><h2>Less chasing.<br/><em>More doing.</em></h2></div><p>See how inquiries, follow-ups, bookings, and project details could move together. Switch between business and creator examples to explore what Baymori can help connect.</p></div>
       <IntegrationNetwork/>
-      <div className="integration-summary"><div><h3>One connected workflow, built around you.</h3><p>We focus on the handoffs that slow you down: inquiries, scheduling, project information, and follow-ups.</p></div><a href="#contact" className="inline-link">Discuss your workflow <ArrowUpRight size={17}/></a></div>
+      <div className="integration-summary"><div><h3>Good systems make follow-through easier.</h3><p>These are examples, not prebuilt automations. We'll map the right handoffs and confirm what's practical with the tools you already use.</p></div><a href="#contact" className="inline-link">Discuss your workflow <ArrowUpRight size={17}/></a></div>
     </div></section>
 
     <section id="process" className="section surface-cream"><div className="wrap"><div className="section-head"><div><span className="kicker">HOW WE WORK</span><h2>Clear steps.<br/><em>Better systems.</em></h2></div><p>We keep the process straightforward, from the first conversation to launch and ongoing support.</p></div><div className="process-grid">{process.map(s=><article key={s.n}><span>{s.n}</span><h3>{s.title}</h3><p>{s.body}</p></article>)}</div></div></section>
