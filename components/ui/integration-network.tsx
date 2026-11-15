@@ -24,12 +24,12 @@ const examples = {
     { name: "Team updated", subtitle: "Everyone aligned", icon: Bell },
   ],
   creator: [
-    { name: "Brand inquiry", subtitle: "Partnership request", icon: Handshake },
-    { name: "Brief captured", subtitle: "Details organized", icon: ClipboardList },
+    { name: "Project inquiry", subtitle: "Customer reaches out", icon: Handshake },
+    { name: "Details captured", subtitle: "Details organized", icon: ClipboardList },
     { name: "Follow-up", subtitle: "Next steps sent", icon: MailCheck },
     { name: "Call booked", subtitle: "Calendar updated", icon: CalendarCheck2 },
-    { name: "Deliverables", subtitle: "Deadlines tracked", icon: FolderKanban },
-    { name: "Partner updated", subtitle: "Progress shared", icon: Bell },
+    { name: "Project tasks", subtitle: "Deadlines tracked", icon: FolderKanban },
+    { name: "Customer updated", subtitle: "Progress shared", icon: Bell },
   ],
 } as const;
 
@@ -41,14 +41,14 @@ export function IntegrationNetwork() {
   const nodes = examples[audience];
 
   return (
-    <div className="network-panel" aria-label="Examples of Baymori business and creator workflows">
+    <div className="network-panel" aria-label="Examples of Baymori service business booking examples">
       <div className="network-heading">
         <span className="network-overline">A CONNECTED APPROACH</span>
         <span>Built around your work</span>
       </div>
       <div className="network-switch" role="group" aria-label="Choose a workflow example">
-        <button type="button" className={audience === "business" ? "is-active" : ""} aria-pressed={audience === "business"} onClick={() => setAudience("business")}>Business</button>
-        <button type="button" className={audience === "creator" ? "is-active" : ""} aria-pressed={audience === "creator"} onClick={() => setAudience("creator")}>Creator</button>
+        <button type="button" className={audience === "business" ? "is-active" : ""} aria-pressed={audience === "business"} onClick={() => setAudience("business")}>Appointments</button>
+        <button type="button" className={audience === "creator" ? "is-active" : ""} aria-pressed={audience === "creator"} onClick={() => setAudience("creator")}>Projects</button>
       </div>
       <div className="network-art">
         <svg className="network-paths" viewBox="0 0 600 420" aria-hidden="true" preserveAspectRatio="none">
