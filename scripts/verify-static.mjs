@@ -2,7 +2,7 @@ import { existsSync, readFileSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
 const root = resolve('out');
-const required = ['index.html', 'transfer/index.html', '404.html'];
+const required = ['index.html', 'transfer/index.html', '404.html', 'privacy/index.html', 'terms/index.html', 'service-terms/index.html', 'cookies/index.html', 'accessibility/index.html'];
 const failures = [];
 for (const file of required) {
   const path = join(root, file);
@@ -10,7 +10,7 @@ for (const file of required) {
 }
 if (existsSync(join(root, 'index.html'))) {
   const home = readFileSync(join(root, 'index.html'), 'utf8');
-  for (const label of ['Less busywork.', 'More business.', '263155617068057']) {
+  for (const label of ['Less busywork.', 'More business.', 'Continue in email']) {
     if (!home.includes(label)) failures.push(`Missing homepage content: ${label}`);
   }
   const refs = [...home.matchAll(/(?:src|href)="(\/(?!\/)[^"?#]+)(?:[?#][^"]*)?"/g)].map(m=>m[1]);
@@ -23,7 +23,7 @@ if (existsSync(join(root, 'index.html'))) {
 }
 if (existsSync(join(root, 'transfer/index.html'))) {
   const transfer=readFileSync(join(root, 'transfer/index.html'), 'utf8');
-  if (!transfer.includes('263155490983062')) failures.push('Transfer page missing migration form link');
+  if (!transfer.includes('Continue in email')) failures.push('Transfer page missing native inquiry form');
 }
 if (failures.length) {
   console.error('Static export verification failed:\n' + failures.map(x=>' - '+x).join('\n'));
