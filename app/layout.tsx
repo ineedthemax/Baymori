@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Baymori | Websites, Hosting, SEO & Automation",
-  description: "Baymori builds, hosts, and optimizes websites and connected digital systems for growing businesses.",
+  title: "Baymori | Websites & Ongoing Care for Service Businesses",
+  description: "Websites and ongoing care for service businesses that depend on inquiries and bookings. Keep your existing platform or start with a new website.",
   robots: { index: true, follow: true },
 };
 
