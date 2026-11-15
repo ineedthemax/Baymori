@@ -5,7 +5,8 @@ import { ArrowRight, ArrowUpRight, Menu, X, Globe2, SearchCheck, Zap, ServerCog,
 import { DotField } from "@/components/ui/dot-field";
 import { IntegrationNetwork } from "@/components/ui/integration-network";
 
-const CONTACT_FORM = "https://form.jotform.com/263155617068057";
+import NativeInquiryForm from "@/components/inquiry-form";
+import LegalFooter from "@/components/legal-footer";
 
 const services = [
   { icon: ServerCog, id: "hosting", number: "01", title: "Managed hosting & care", body: "A dependable home for your website, with setup, maintenance, and support tailored to your stack." },
@@ -72,18 +73,8 @@ export default function Home() {
 
     <section id="contact" className="section contact-area"><div className="wrap contact-grid"><div><span className="kicker">LET'S BUILD SOMETHING USEFUL</span><h2>Tell us what’s<br/><em>slowing you down.</em></h2><p>Start with the challenge you're trying to solve. We'll help shape a sensible next step.</p><div className="contact-trust"><CheckCircle2 size={17}/> Clear scope before work begins</div><div className="contact-trust"><CheckCircle2 size={17}/> Recommendations matched to your needs</div></div><InquiryForm/></div></section>
 
-    <footer className="site-footer"><div className="wrap footer-row"><a href="#top" aria-label="Baymori home"><img src="/brand/baymori-horizontal-black.webp" alt="Baymori"/></a><div><a href="#services">Services</a><a href="/transfer">Transfer your site</a><a href="#contact">Contact</a></div><span>© {new Date().getFullYear()} Baymori</span></div></footer>
+    <footer className="site-footer"><div className="wrap footer-row"><a href="#top" aria-label="Baymori home"><img src="/brand/baymori-horizontal-black.webp" alt="Baymori"/></a><div><a href="#services">Services</a><a href="/transfer">Transfer your site</a><a href="#contact">Contact</a></div><span>© {new Date().getFullYear()} Baymori</span></div><div className="wrap"><LegalFooter/></div></footer>
   </main>;
 }
 
-function InquiryForm() {
-  return <div className="form-card">
-    <span className="form-kicker">PROJECT INQUIRY</span>
-    <h3>Start with a conversation.</h3>
-    <p className="form-intro">Tell us what you need. We’ll review your project and follow up about the right next step.</p>
-    <iframe className="project-form-frame" title="Baymori project inquiry form" src={CONTACT_FORM} loading="lazy" />
-    <p className="form-note">Please don't share passwords or sensitive account information.</p>
-    <a className="form-open-link" href={CONTACT_FORM} target="_blank" rel="noopener noreferrer">Having trouble with the form? Open it directly <ArrowUpRight size={15}/></a>
-    <a href="/transfer" className="form-transfer">Moving an existing site? Request a migration assessment <ArrowUpRight size={15}/></a>
-  </div>;
-}
+function InquiryForm(){return <NativeInquiryForm/>;}

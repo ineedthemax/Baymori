@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
+import InquiryForm from "@/components/inquiry-form";
+import LegalFooter from "@/components/legal-footer";
 
 export const metadata: Metadata = {
   title: "Transfer Your Website | Baymori",
   description: "Request a free Baymori website migration assessment. We'll review your current platform and recommend a safe way to move or manage your website.",
 };
 
-const FORM_URL = "https://form.jotform.com/263155490983062";
+
 
 export default function TransferPage() {
   return (
@@ -27,8 +29,8 @@ export default function TransferPage() {
         </div>
         <section className="transfer-form-section" aria-label="Migration assessment request">
           <div className="transfer-form-head"><h2>Tell us about your website.</h2><p>Complete the short form below. No passwords or payment information needed.</p></div>
-          <iframe className="transfer-form-frame" title="Baymori website migration assessment form" src={FORM_URL} loading="lazy" />
-          <div className="transfer-form-footer"><a href={FORM_URL} target="_blank" rel="noopener noreferrer">Open the form in a new tab ↗</a><p>Submitting this form requests an assessment. It does not authorize a transfer or guarantee zero downtime.</p></div>
+          <InquiryForm kind="transfer"/>
+          <p className="form-note">Requesting an assessment does not authorize a transfer.</p>
         </section>
         <section className="transfer-how" aria-labelledby="transfer-how-title"><h2 id="transfer-how-title">Here's how it works.</h2><div className="transfer-how-grid">
           <article><span>01 / REQUEST</span><h3>Tell us what you have</h3><p>Share your site address, current platform, and what you want to change.</p></article>
@@ -38,7 +40,7 @@ export default function TransferPage() {
         </div></section>
         <p className="transfer-warning">Some hosted builders, including Wix and Squarespace, cannot be moved as a complete functioning website to unrelated hosting. Those requests may require rebuilding or keeping the current platform. Do not cancel existing hosting until your migration is verified.</p>
       </div>
-      <footer className="transfer-footer">© {new Date().getFullYear()} Baymori. Digital infrastructure, built for growth.</footer>
+      <footer className="transfer-footer">© {new Date().getFullYear()} Baymori. Digital infrastructure, built for growth.<LegalFooter/></footer>
     </main>
   );
 }
