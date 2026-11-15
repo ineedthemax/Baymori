@@ -2,7 +2,7 @@ import { existsSync, readFileSync, statSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
 const root = resolve('out');
-const required = ['index.html', 'transfer/index.html', '404.html', 'privacy/index.html', 'terms/index.html', 'service-terms/index.html', 'cookies/index.html', 'accessibility/index.html'];
+const required = ['index.html', 'transfer/index.html', '404.html', 'privacy/index.html', 'terms/index.html', 'service-terms/index.html', 'cookies/index.html', 'accessibility/index.html', 'onboarding/index.html'];
 const failures = [];
 for (const file of required) {
   const path = join(root, file);
