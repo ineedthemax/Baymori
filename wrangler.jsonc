@@ -9,7 +9,12 @@
   },
   "observability": {
     "enabled": true,
-    "logs": { "enabled": true },
-    "traces": { "enabled": false }
-  }
+    "logs": {
+      "enabled": true
+    },
+    "traces": {
+      "enabled": false
+    }
+  },
+  "previews": {}
 }

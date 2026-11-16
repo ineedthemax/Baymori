@@ -61,3 +61,7 @@ Logs emit only event codes and aggregate backlog counts. Configure provider log 
 - https://developers.notion.com/reference/query-a-data-source
 
 This is a scoped code/configuration review and testing foundation, not a guarantee of zero vulnerabilities or a completed penetration test.
+
+## Existing Cloudflare preview repair
+
+The existing Workers Builds preview command was failing because `wrangler preview` requires a previews block. Added an empty previews block to the static-only main configuration. It introduces no D1 binding, API route or secrets and does not deploy production. Preview URLs are public unless separately protected; this static preview contains no private client records. Both GitHub verification runs passed on the initial PR commit. The preview repair requires a new build result.
