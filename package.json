@@ -4,11 +4,17 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && node scripts/security-headers.mjs",
     "start": "next start",
     "lint": "tsc --noEmit",
     "typecheck": "tsc --noEmit",
-    "verify:static": "node scripts/verify-static.mjs"
+    "verify:static": "node scripts/verify-static.mjs",
+    "test:security": "node --experimental-strip-types --test tests/*.test.mjs",
+    "check:security": "node scripts/check-security.mjs",
+    "verify:staging": "wrangler deploy --dry-run --config wrangler.lead-flow.staging.jsonc",
+    "types:worker": "wrangler types worker-configuration.d.ts --config wrangler.lead-flow.staging.jsonc",
+    "sync:notion:staging": "node scripts/sync-notion-staging.mjs",
+    "smoke:staging": "node scripts/smoke-staging.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
@@ -27,6 +33,8 @@
     "wrangler": "^4.148.0"
   },
   "overrides": {
-    "next": {}
+    "next": {
+      "postcss": "8.5.32"
+    }
   }
 }

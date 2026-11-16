@@ -7,3 +7,5 @@ out/
 .dev.vars*
 *.pem
 *.key
+
+worker-configuration.d.ts
