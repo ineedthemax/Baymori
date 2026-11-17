@@ -1,0 +1,13 @@
+const ts = require('typescript');
+const fs = require('node:fs');
+const assert = require('node:assert/strict');
+const m = { exports: {} };
+new Function('exports', 'module', ts.transpileModule(fs.readFileSync('lib/assistant.ts', 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText)(m.exports, m);
+const a = m.exports;
+for (const need of ['A new website', 'Updates to my website', 'Hosting or ongoing care', 'Help figuring it out']) assert.ok(a.recommendation({ ...a.emptyAnswers, need }).length > 60);
+assert.match(a.answerQuestion('What is the price?'), /coming soon/);
+assert.match(a.answerQuestion('How do payments work?'), /50%/);
+assert.match(a.answerQuestion('Can you guarantee a deadline?'), /cannot promise/);
+assert.match(a.answerQuestion('Do you know my revenue?'), /don’t have an approved answer/);
+assert.match(a.summary({ ...a.emptyAnswers, name: 'Max', details: 'Booking requests' }), /Booking requests/);
+console.log('9 assistant checks passed');

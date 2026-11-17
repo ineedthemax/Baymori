@@ -7,6 +7,7 @@ import { IntegrationNetwork } from "@/components/ui/integration-network";
 
 import NativeInquiryForm from "@/components/inquiry-form";
 import LegalFooter from "@/components/legal-footer";
+import BaymoriAssistant from "@/components/baymori-assistant";
 
 const services = [
   { icon: Globe2, id: "websites", number: "01", title: "Website builds", body: "Clean, fast, responsive websites that make it easier for customers to take the next step." },
@@ -23,7 +24,7 @@ const process = [
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
-  return <main id="top"><a className="skip-link" href="#services">Skip to content</a>
+  return <main id="top"><BaymoriAssistant/><a className="skip-link" href="#services">Skip to content</a>
     <header className="site-header">
       <nav className="site-nav wrap" aria-label="Main navigation">
         <a href="#top" aria-label="Baymori home" className="logo-link"><img src="/brand/baymori-horizontal-black.webp" alt="Baymori" /></a>
