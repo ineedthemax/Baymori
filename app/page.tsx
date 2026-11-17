@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ArrowRight, ArrowUpRight, Menu, X, Globe2, SearchCheck, Zap, ServerCog, Check, CheckCircle2, ShieldCheck } from "lucide-react";
 import ScrollReveals from "@/components/scroll-reveals";
+import AnimatedHero from "@/components/animated-hero";
 import { IntegrationNetwork } from "@/components/ui/integration-network";
 
 import NativeInquiryForm from "@/components/inquiry-form";
@@ -35,7 +36,7 @@ export default function Home() {
       {menuOpen && <div className="mobile-menu" id="mobile-menu"><a href="#services" onClick={()=>setMenuOpen(false)}>Services</a><a href="#hosting" onClick={()=>setMenuOpen(false)}>Hosting & transfers</a><a href="#integrations" onClick={()=>setMenuOpen(false)}>Integrations</a><a href="#care" onClick={()=>setMenuOpen(false)}>Monthly care</a><a href="#contact" onClick={()=>setMenuOpen(false)}>Start a project</a></div>}
     </header>
 
-    <section className="audit-hero wrap" aria-labelledby="hero-title"><h1 id="hero-title">Less busywork.<br/><em>More business.</em></h1><p>Websites and maintenance for businesses and creators. We build, host, optimize, and connect the digital tools behind your work.</p><a className="btn btn-copper" href="#contact">Start a project <ArrowUpRight size={16}/></a></section>
+    <AnimatedHero/>
     <ScrollReveals/>
 
     <section id="services" className="section surface-white"><div className="wrap">
