@@ -17,6 +17,12 @@ const services = [
   { icon: ShieldCheck, id: "maintenance", number: "04", title: "Monthly maintenance", body: "Technical checks and defined support for compatible websites under an agreed care plan." },
 ];
 
+const workProjects = [
+  {name:'MsHorace Tutoring',brand:'MsHorace',label:'Tutoring',subtitle:'Pre-Algebra & Algebra 1',category:'Education · Website',description:'A website for an online math tutoring business, bringing tutoring services, session options, and booking links together in one place.',url:'https://mshoracetutoring.com/'},
+  {name:'MADD BULL Industrial Services',brand:'MADD BULL',label:'Industrial Services',subtitle:'Commercial & operational services',category:'Industrial services · Website',description:'A service-focused website presenting janitorial, workforce dispatch, hauling, and specialty cleanup services, with a service finder and a clear path to inquire.',url:'https://mdbindustrial.com/'},
+  {name:'Cover Tactical Six',brand:'Cover Tactical',label:'Six',subtitle:'Security company operations support',category:'Business services · Website',description:'An interactive website presenting account support, recruiting, and operational services for security companies, with a command-center demonstration and consultation form.',url:'https://covertacticalsix.com/'},
+];
+
 const process = [
   { n: "01", title: "Tell us what you need", body: "We learn about your website, your tools, and where your business is getting stuck." },
   { n: "02", title: "Get a clear plan", body: "We recommend the right scope and outline responsibilities before any work begins." },
@@ -63,7 +69,7 @@ export default function Home() {
       <div className="integration-summary"><div><h3>Good systems make follow-through easier.</h3><p>These are examples, not prebuilt automations. We'll map the right handoffs and confirm what's practical with the tools you already use.</p></div><a href="#contact" className="inline-link">Discuss your workflow <ArrowUpRight size={17}/></a></div>
     </div></section>
 
-    <section id="work" className="section surface-white"><div className="wrap"><div className="section-head"><div><h2>See our work.</h2></div><p>A website built to introduce a service, explain the options, and help visitors take the next step.</p></div><article className="work-project"><div className="work-project-brand" aria-hidden="true"><span>MsHorace</span><strong>Tutoring</strong><small>Pre-Algebra &amp; Algebra 1</small></div><div className="work-project-copy"><p className="work-project-category">Education · Website</p><h3>MsHorace Tutoring</h3><p>A website for an online math tutoring business, bringing tutoring services, session options, and booking links together in one place.</p><a className="inline-link" href="https://mshoracetutoring.com/" target="_blank" rel="noopener noreferrer">Visit website <ArrowUpRight size={18}/><span className="sr-only"> (opens in a new tab)</span></a></div></article></div></section>
+    <section id="work" className="section surface-white"><div className="wrap"><div className="section-head"><div><h2>See our work.</h2></div><p>Websites built to introduce a service, explain the options, and help visitors take the next step.</p></div><div className="work-project-list">{workProjects.map(project=><article className="work-project" key={project.url}><div className="work-project-brand" aria-hidden="true"><span>{project.brand}</span><strong>{project.label}</strong><small>{project.subtitle}</small></div><div className="work-project-copy"><p className="work-project-category">{project.category}</p><h3>{project.name}</h3><p>{project.description}</p><a className="inline-link" href={project.url} target="_blank" rel="noopener noreferrer">Visit website <ArrowUpRight size={18}/><span className="sr-only">: {project.name} (opens in a new tab)</span></a></div></article>)}</div></div></section>
 
     <section id="process" className="section surface-cream"><div className="wrap"><div className="section-head"><div><h2>Clear steps.<br/><em>Better systems.</em></h2></div><p>We keep the process straightforward, from the first conversation to launch and ongoing support.</p></div><div className="process-grid">{process.map(s=><article key={s.n}><span>{s.n}</span><h3>{s.title}</h3><p>{s.body}</p></article>)}</div></div></section>
 
