@@ -29,11 +29,11 @@ export default function Home() {
     <header className="site-header">
       <nav className="site-nav wrap" aria-label="Main navigation">
         <a href="#top" aria-label="Baymori home" className="logo-link"><img src="/brand/baymori-horizontal-black.webp" alt="Baymori" /></a>
-        <div className="nav-links"><a href="#services">Services</a><a href="#work">Work examples</a><a href="#integrations">Integrations</a><a href="#care">Monthly care</a></div>
+        <div className="nav-links"><a href="#services">Services</a><a href="#work">See our work</a><a href="#integrations">Integrations</a><a href="#care">Monthly care</a></div>
         <a className="btn btn-copper nav-cta" href="#contact">Start a project <ArrowUpRight size={16}/></a>
         <button className="menu-button" aria-label={menuOpen ? "Close menu" : "Open menu"} aria-expanded={menuOpen} aria-controls="mobile-menu" onClick={()=>setMenuOpen(v=>!v)}>{menuOpen?<X size={23}/>:<Menu size={23}/>}</button>
       </nav>
-      {menuOpen && <div className="mobile-menu" id="mobile-menu"><a href="#services" onClick={()=>setMenuOpen(false)}>Services</a><a href="#hosting" onClick={()=>setMenuOpen(false)}>Hosting & transfers</a><a href="#integrations" onClick={()=>setMenuOpen(false)}>Integrations</a><a href="#care" onClick={()=>setMenuOpen(false)}>Monthly care</a><a href="#contact" onClick={()=>setMenuOpen(false)}>Start a project</a></div>}
+      {menuOpen && <div className="mobile-menu" id="mobile-menu"><a href="#services" onClick={()=>setMenuOpen(false)}>Services</a><a href="#hosting" onClick={()=>setMenuOpen(false)}>Hosting & transfers</a><a href="#integrations" onClick={()=>setMenuOpen(false)}>Integrations</a><a href="#work" onClick={()=>setMenuOpen(false)}>See our work</a><a href="#care" onClick={()=>setMenuOpen(false)}>Monthly care</a><a href="#contact" onClick={()=>setMenuOpen(false)}>Start a project</a></div>}
     </header>
 
     <AnimatedHero/>
@@ -63,7 +63,7 @@ export default function Home() {
       <div className="integration-summary"><div><h3>Good systems make follow-through easier.</h3><p>These are examples, not prebuilt automations. We'll map the right handoffs and confirm what's practical with the tools you already use.</p></div><a href="#contact" className="inline-link">Discuss your workflow <ArrowUpRight size={17}/></a></div>
     </div></section>
 
-    <section id="work" className="section surface-white"><div className="wrap"><h2>Work examples</h2><p className="work-placeholder">Selected work coming soon. Project examples will be added once approved for publication.</p></div></section>
+    <section id="work" className="section surface-white"><div className="wrap"><div className="section-head"><div><h2>See our work.</h2></div><p>A website built to introduce a service, explain the options, and help visitors take the next step.</p></div><article className="work-project"><div className="work-project-brand" aria-hidden="true"><span>MsHorace</span><strong>Tutoring</strong><small>Pre-Algebra &amp; Algebra 1</small></div><div className="work-project-copy"><p className="work-project-category">Education · Website</p><h3>MsHorace Tutoring</h3><p>A website for an online math tutoring business, bringing tutoring services, session options, and booking links together in one place.</p><a className="inline-link" href="https://mshoracetutoring.com/" target="_blank" rel="noopener noreferrer">Visit website <ArrowUpRight size={18}/><span className="sr-only"> (opens in a new tab)</span></a></div></article></div></section>
 
     <section id="process" className="section surface-cream"><div className="wrap"><div className="section-head"><div><h2>Clear steps.<br/><em>Better systems.</em></h2></div><p>We keep the process straightforward, from the first conversation to launch and ongoing support.</p></div><div className="process-grid">{process.map(s=><article key={s.n}><span>{s.n}</span><h3>{s.title}</h3><p>{s.body}</p></article>)}</div></div></section>
 
