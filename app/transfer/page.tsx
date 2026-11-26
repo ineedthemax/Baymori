@@ -40,7 +40,7 @@ export default function TransferPage() {
         </div></section>
         <p className="transfer-warning">Some hosted builders, including Wix and Squarespace, cannot be moved as a complete functioning website to unrelated hosting. Those requests may require rebuilding or keeping the current platform. Do not cancel existing hosting until your migration is verified.</p>
       </div>
-      <footer className="transfer-footer">© {new Date().getFullYear()} Baymori. Digital infrastructure, built for growth.<LegalFooter/></footer>
+      <footer className="transfer-footer">© {new Date().getFullYear()} Baymori. Websites, connected systems, and ongoing care.<LegalFooter/></footer>
     </main>
   );
 }
